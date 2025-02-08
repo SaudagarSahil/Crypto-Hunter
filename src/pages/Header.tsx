@@ -13,9 +13,13 @@ import {
 import "../styles/header.css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CryptoState } from "../context/CryptoContext";
 
-function Header() {
+const Header: React.FC = () => {
   const navigate = useNavigate();
+
+  const { currency, setCurrency } = CryptoState();
+  console.log("currency", currency);
 
   const darkTheme = createTheme({
     palette: {
@@ -54,6 +58,8 @@ function Header() {
                 sx={{
                   width: "100px",
                 }}
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
               >
                 <MenuItem value={"INR"}>INR</MenuItem>
                 <MenuItem value={"USD"}>USD</MenuItem>
@@ -64,6 +70,6 @@ function Header() {
       </AppBar>
     </ThemeProvider>
   );
-}
+};
 
 export default Header;
