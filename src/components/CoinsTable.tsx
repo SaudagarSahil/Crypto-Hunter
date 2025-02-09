@@ -6,6 +6,7 @@ import {
   Container,
   createTheme,
   LinearProgress,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -45,6 +46,9 @@ const CoinsTable: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [coins, setCoins] = useState<Coin[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(2);
+
+  const limit: number = 10;
 
   const { currency } = CryptoState();
 
@@ -59,7 +63,9 @@ const CoinsTable: React.FC = () => {
 
   let config: Config = {
     method: "get",
-    url: `${Constants.BASE_URL}/top/totalvolfull?limit=10&tsym=USD`,
+    url: `${Constants.BASE_URL}/top/totalvolfull?limit=${limit}&page=${
+      currentPage - 1
+    }&tsym=USD`,
     headers: {
       Accept: "application/json",
       authorization: import.meta.env.VITE_CRYPTOCOMPARE_APIKEY || "",
@@ -71,7 +77,6 @@ const CoinsTable: React.FC = () => {
     axios
       .request(config)
       .then((response) => {
-        // setLoading(false);
         if (response.data.Message == "Success") {
           console.log("Table Data", response?.data?.Data);
           setCoins(response?.data?.Data);
@@ -80,7 +85,6 @@ const CoinsTable: React.FC = () => {
         }
       })
       .catch((error) => {
-        // setLoading(false);
         console.log("Error while fetching Table Data", error);
       })
       .finally(() => {
@@ -96,7 +100,7 @@ const CoinsTable: React.FC = () => {
 
   useEffect(() => {
     fetchTableData();
-  }, [currency]);
+  }, [currency, currentPage]);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -152,7 +156,6 @@ const CoinsTable: React.FC = () => {
                       </TableCell>
                       <TableCell>{row?.DISPLAY?.USD?.PRICE}</TableCell>
                       <TableCell
-                        // align="right"
                         style={{
                           color: isProfit ? "rgb(14, 203, 129)" : "red",
                           fontWeight: 500,
@@ -169,6 +172,24 @@ const CoinsTable: React.FC = () => {
             </Table>
           )}
         </TableContainer>
+
+        <Pagination
+          count={10}
+          sx={{
+            "& .MuiPaginationItem-root": {
+              color: "gold",
+            },
+            paddingX: 20,
+            paddingY: 2,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+          onChange={(_, value) => {
+            setCurrentPage(value);
+            window.scroll(0, 300);
+          }}
+        />
       </Container>
     </ThemeProvider>
   );
