@@ -1,7 +1,14 @@
 import React from "react";
+import Banner from "../components/Banner";
+import CoinsTable from "../components/CoinsTable";
 
 const Homepage: React.FC = () => {
-  return <div>Homepage</div>;
+  return (
+    <div>
+      <Banner />
+      {/* <CoinsTable /> */}
+    </div>
+  );
 };
 
 export default Homepage;
