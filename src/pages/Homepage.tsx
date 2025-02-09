@@ -6,7 +6,7 @@ const Homepage: React.FC = () => {
   return (
     <div>
       <Banner />
-      {/* <CoinsTable /> */}
+      <CoinsTable />
     </div>
   );
 };

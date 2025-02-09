@@ -41,7 +41,7 @@ const Carousel: React.FC = () => {
   };
 
   useEffect(() => {
-    // fetchData();
+    fetchData();
   }, [currency]);
 
   console.log("API DATA", Trending);
