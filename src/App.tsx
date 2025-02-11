@@ -13,7 +13,7 @@ const App: React.FC = () => {
           <Header />
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/coins/:id" element={<Coin />} />
+            <Route path="/coins/:coinSymbol" element={<Coin />} />
           </Routes>
         </div>
       </BrowserRouter>
