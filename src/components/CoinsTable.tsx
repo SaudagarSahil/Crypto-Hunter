@@ -18,6 +18,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type Coin = {
   CoinInfo: {
@@ -52,6 +53,8 @@ const CoinsTable: React.FC = () => {
 
   const { currency } = CryptoState();
 
+  const navigate = useNavigate();
+
   let darkTheme = createTheme({
     palette: {
       mode: "dark",
@@ -63,7 +66,7 @@ const CoinsTable: React.FC = () => {
 
   let config: Config = {
     method: "get",
-    url: `${Constants.BASE_URL}/top/totalvolfull?limit=${limit}&page=${
+    url: `${Constants.BASE_URL_MIN_API}/top/totalvolfull?limit=${limit}&page=${
       currentPage - 1
     }&tsym=USD`,
     headers: {
@@ -133,7 +136,9 @@ const CoinsTable: React.FC = () => {
                   const isProfit = +profit > 0;
                   console.log("Last 24 hours profit", profit);
                   return (
-                    <TableRow>
+                    <TableRow
+                      onClick={() => navigate(`/coins/${row.CoinInfo.Internal}`)}
+                    >
                       <TableCell>
                         <img
                           src={`${Constants.BASE_IMAGE_URL}${row.CoinInfo.ImageUrl}`}
