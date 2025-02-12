@@ -19,8 +19,8 @@ interface CryptoProviderType {
 const Crypto = createContext<CryptoContextType | undefined>(undefined);
 
 const CryptoContext: React.FC<CryptoProviderType> = ({ children }) => {
-  const [currency, setCurrency] = useState<string>("INR");
-  const [symbol, setSymbol] = useState<string>("₹");
+  const [currency, setCurrency] = useState<string>("USD");
+  const [symbol, setSymbol] = useState<string>("$");
 
   useEffect(() => {
     if (currency == "INR") setSymbol("₹");
