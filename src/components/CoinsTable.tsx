@@ -47,7 +47,7 @@ const CoinsTable: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [coins, setCoins] = useState<Coin[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(2);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const limit: number = 10;
 
