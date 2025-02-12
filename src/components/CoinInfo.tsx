@@ -24,7 +24,7 @@ const CoinInfo: React.FC<{ coinSymbol: string | undefined }> = ({ coinSymbol }) 
   const [coinInfo, setCoinInfo] = useState<CoinInfo>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { currency, symbol } = CryptoState();
+  const {  symbol } = CryptoState();
   const config: Config = {
     method: "get",
     url: `${Constants.BASE_URL_DATA_API}/by/symbol`,
@@ -63,7 +63,9 @@ const CoinInfo: React.FC<{ coinSymbol: string | undefined }> = ({ coinSymbol }) 
       {loading ? (
         <LinearProgress />
       ) : (
-        <div>
+        <div style={{
+          padding: '10px',
+        }}>
           <img
             src={coinInfo?.LOGO_URL}
             alt={coinInfo?.NAME}
@@ -72,7 +74,7 @@ const CoinInfo: React.FC<{ coinSymbol: string | undefined }> = ({ coinSymbol }) 
           />
           <Typography variant="h3">{coinInfo?.NAME}</Typography>
           <Typography variant="subtitle1">
-            {coinInfo?.ASSET_DESCRIPTION_SUMMARY}
+            {coinInfo?.ASSET_DESCRIPTION_SUMMARY.slice(0, 200)} {'...'}
           </Typography>
           <div>
             <span style={{ display: "flex" }}>
