@@ -96,8 +96,10 @@ const CoinsTable: React.FC = () => {
   };
 
   const handleSearch = () => {
-    return coins.filter((coin) =>
-      coin?.CoinInfo.Name.toLowerCase().includes(search)
+    return coins.filter(
+      (coin) =>
+        coin?.CoinInfo.Name.toLowerCase().includes(search) ||
+        coin?.CoinInfo.FullName.toLowerCase().includes(search)
     );
   };
 
@@ -112,9 +114,16 @@ const CoinsTable: React.FC = () => {
           Cryptocurrency Prices by Market Cap
         </Typography>
         <TextField
-          label="Search For a Crypto Currency.."
+          label="Search For a Crypto Currency"
           variant="outlined"
           onChange={(e) => setSearch(e.target.value)}
+          sx={{
+            width: "100%",
+            marginY: 4,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "10px",
+            },
+          }}
         />
         <TableContainer component={Paper}>
           {loading ? (
@@ -137,7 +146,10 @@ const CoinsTable: React.FC = () => {
                   console.log("Last 24 hours profit", profit);
                   return (
                     <TableRow
-                      onClick={() => navigate(`/coins/${row.CoinInfo.Internal}`)}
+                      hover
+                      onClick={() =>
+                        navigate(`/coins/${row.CoinInfo.Internal}`)
+                      }
                     >
                       <TableCell>
                         <img
@@ -153,6 +165,9 @@ const CoinsTable: React.FC = () => {
                             display: "flex",
                             flexDirection: "column",
                             gap: 2,
+                            alignItems: 'center',
+                            width: '120px'
+                            // marginLeft: 10,
                           }}
                         >
                           <span>{row.CoinInfo.Internal}</span>
@@ -192,7 +207,7 @@ const CoinsTable: React.FC = () => {
           }}
           onChange={(_, value) => {
             setCurrentPage(value);
-            window.scroll(0, 300);
+            window.scroll(0, 640);
           }}
         />
       </Container>

@@ -32,16 +32,24 @@ const Header: React.FC = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar color="secondary" position="static">
+      <AppBar
+        sx={{
+          // backgroundColor: "#e6ffe6",
+          paddingY: 1,
+        }}
+        color="inherit"
+        position="static"
+      >
         <Container>
           <Toolbar
             sx={{
               display: "flex",
-              justifyContent: "space-around",
-              width: "100vw",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
             <Typography
+              variant="h5"
               className="title"
               sx={{
                 color: "gold",
@@ -57,6 +65,7 @@ const Header: React.FC = () => {
                 labelId="select"
                 sx={{
                   width: "100px",
+                  height: '40px'
                 }}
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
