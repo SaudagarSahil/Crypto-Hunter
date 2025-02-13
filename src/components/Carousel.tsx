@@ -3,30 +3,33 @@ import React, { useEffect, useState } from "react";
 import { CryptoState } from "../context/CryptoContext";
 import AliceCarousel from "react-alice-carousel";
 import { Link } from "react-router-dom";
+import { Constants } from "../shared/Constants";
+import { Typography } from "@mui/material";
 
 interface Config extends AxiosRequestConfig {
   method: string;
-  maxBodyLength: number;
-  maxContentLength: number;
   url: string;
-  headers: { Accept: string; "X-CoinApi-key": string };
+  params: { limit: number; tsym: string };
+  headers: { Accept: string; authorization: string };
 }
 
 const Carousel: React.FC = () => {
-  const [Trending, setTrending] = useState<{ asset_id: string; url: string }[]>(
-    []
-  );
+  const [trending, setTrending] = useState<
+    { CoinInfo: { Id: string; ImageUrl: string; Internal: string } }[]
+  >([]);
 
   const { currency } = CryptoState();
 
   let config: Config = {
     method: "get",
-    maxBodyLength: Infinity,
-    maxContentLength: Infinity,
-    url: "https://rest.coinapi.io/v1/assets/icons/2",
+    url: `${Constants.BASE_URL_MIN_API}/top/totalvolfull`,
+    params: {
+      limit: 10,
+      tsym: "USD",
+    },
     headers: {
       Accept: "Application/json",
-      "X-CoinApi-key": import.meta.env.VITE_COINAPI_APIKEY || "",
+      authorization: import.meta.env.VITE_CRYPTOCOMPARE_APIKEY,
     },
   };
 
@@ -34,8 +37,8 @@ const Carousel: React.FC = () => {
     axios
       .request(config)
       .then((response) => {
-        console.log(response);
-        setTrending(response.data);
+        console.log("Trending Icons Data: ", response.data.Data);
+        setTrending(response.data.Data);
       })
       .catch((error) => console.log("Error :", error));
   };
@@ -44,7 +47,7 @@ const Carousel: React.FC = () => {
     fetchData();
   }, [currency]);
 
-  console.log("API DATA", Trending);
+  console.log("API DATA", trending);
 
   const responsive = {
     0: {
@@ -55,17 +58,25 @@ const Carousel: React.FC = () => {
     },
   };
 
-  const items = Trending.slice(0, 10).map((coin) => {
+  const items = trending.map((coin) => {
     return (
-      <Link to={`/coins/${coin.asset_id}`}>
+      <Link style={{
+        display: "flex",
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 6,
+      }} to={`/coins/${coin.CoinInfo.Internal}`}>
         <img
-          src={coin.url}
-          alt={coin.asset_id}
+          src={`${Constants.BASE_IMAGE_URL}${coin.CoinInfo.ImageUrl}`}
+          alt={coin.CoinInfo.Id}
           style={{
             height: "150px",
             width: "150px",
           }}
         />
+        <Typography sx={{
+          color: 'gold'
+        }}>{coin.CoinInfo.Internal}</Typography>
       </Link>
     );
   });
