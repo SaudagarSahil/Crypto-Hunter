@@ -35,3 +35,9 @@ A sleek and interactive cryptocurrency tracking web app built with **React.js** 
 4. Start the development server:
    ```sh
    npm run dev
+
+## 🤝 Contributing  
+
+Feel free to open issues or create pull requests if you find bugs or want to improve the project.  
+
+   
