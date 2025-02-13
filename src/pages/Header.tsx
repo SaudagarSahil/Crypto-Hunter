@@ -3,7 +3,6 @@ import {
   Container,
   createTheme,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   ThemeProvider,
@@ -60,12 +59,11 @@ const Header: React.FC = () => {
               Crypto Hunter
             </Typography>
             <FormControl>
-              {/* <InputLabel id="select">Currency</InputLabel> */}
               <Select
                 labelId="select"
                 sx={{
                   width: "100px",
-                  height: '40px'
+                  height: "40px",
                 }}
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
