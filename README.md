@@ -28,7 +28,7 @@ A sleek and interactive cryptocurrency tracking web app built with **React.js** 
    ```sh
    npm install
 
-3.Create a .env file and add your CryptoCompare API Key:
+3. Create a .env file and add your CryptoCompare API Key:
    ```sh
    VITE_CRYPTOCOMPARE_APIKEY = your_api_key_here
 
