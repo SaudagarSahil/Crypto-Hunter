@@ -22,4 +22,8 @@ A sleek and interactive cryptocurrency tracking web app built with **React.js** 
 1. Clone the repository:  
    ```sh
    git clone https://github.com/SaudagarSahil/Crypto-Hunter.git
-   cd crypto-tracker
+   cd crypto-hunter
+
+2. install Dependencies
+   ```sh
+   npm install
