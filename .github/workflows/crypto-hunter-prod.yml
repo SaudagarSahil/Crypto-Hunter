@@ -28,6 +28,6 @@ jobs:
 
       - name: Build and Deploy to Vercel
         run: |
-          url=$(npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} -e VITE_CRYPTOCOMPARE_APIKEY=${{ secrets.VITE_CRYPTOCOMPARE_APIKEY }})
           echo "url=$url" >> $GITHUB_OUTPUT
           echo "Production deployed at: $url"
