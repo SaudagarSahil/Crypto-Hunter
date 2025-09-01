@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { CryptoState } from "../context/CryptoContext";
 import CoinInfo from "../components/CoinInfo";
 import CoinChart from "../components/CoinChart";
 
