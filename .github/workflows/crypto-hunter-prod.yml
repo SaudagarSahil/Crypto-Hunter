@@ -1,79 +1,37 @@
-name: Build
-run-name: ${{ github.actor }} is running cicd on production
+name: Deploy Production to Vercel
 
-on: workflow_dispatch
-
-defaults:
-    run:
-        shell: bash
-
-env:
-    VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
-    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+on:
+  push:
+    branches:
+      - main   # 👈 adjust if your production branch is named differently
 
 jobs:
-    prebuild_prod:
-        name: Prebuild Prod
-        runs-on: ubuntu-latest
-        environment:
-            name: production
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout your repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        permissions:
-            contents: "read"
+      # Setup Node.js (adjust version to match your project)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
 
-        steps:
-            - name: checkout
-              uses: actions/checkout@v4
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-            - name: setup-node
-              uses: actions/setup-node@v4
-              with:
-                node-version: 20
+      # Build project for PRODUCTION
+      - name: Build project
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
-            - name: Install deps
-              run: npm install
-
-            - name: pull vercel environments
-              run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-            - name: build with vercel
-              run: npx vercel build --token=${{ secrets.VERCEL_TOKEN }}
-
-            - name: upload prebuild output
-              uses: actions/upload-artifact@v4
-              with:
-                name: vercel-output-prod
-                path: |
-                  .vercel/output
-                  .vercel/project.json
-        
-    deploy_prod:
-        name: Deploy Production
-        needs: prebuild_prod
-        environment:
-            name: production
-            url: ${{ steps.prebuild_prod.outputs.url }}
-        runs-on: ubuntu-latest
-        outputs:
-            url: ${{ steps.deploy.outputs.url }}
-        steps:
-            - name: download artifact
-              uses: actions/download-artifact@v4
-              with:
-                name: vercel-output-prod
-                path: .vercel
-
-            - name: Deploy prebuild to vercel
-              id: deploy
-              run: |
-                  url=$(npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-                  echo "url=$url" >> $GITHUB_OUTPUT
-                  echo "Production URL: $url"
-            
-            
-            
-
-
-
-
-
+      # Deploy prebuilt output to PRODUCTION
+      - name: Deploy to Vercel (Production)
+        id: deploy
+        run: |
+          url=$(npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> $GITHUB_OUTPUT
+          echo "✅ Production deployed: $url"
