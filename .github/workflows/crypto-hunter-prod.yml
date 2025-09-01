@@ -43,7 +43,9 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: vercel-output-prod
-                path: .vercel/output
+                path: |
+                  .vercel/output
+                  .vercel/project.json
         
     deploy_prod:
         name: Deploy Production
@@ -59,7 +61,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 name: vercel-output-prod
-                path: .vercel/output
+                path: .vercel
 
             - name: Deploy prebuild to vercel
               id: deploy
