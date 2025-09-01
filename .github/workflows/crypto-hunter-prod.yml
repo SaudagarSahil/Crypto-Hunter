@@ -1,0 +1,39 @@
+name: Build
+run-name: ${{ github.actor }} is running cicd on production
+
+on: workflow_dispatch
+
+defaults:
+    run:
+        shell: bash
+
+jobs:
+    deploy:
+        name: Build script
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: "read"
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v4
+
+            - name: setup-node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+
+            - name: Install deps
+              run: npm install
+
+            - name: build-vite-app
+              run: npm run build
+            
+            - name: show-result
+              run: echo "VITE-BUILD-DONE"
+
+
+
+
+
