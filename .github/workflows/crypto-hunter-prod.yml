@@ -1,37 +1,33 @@
-name: Deploy Production to Vercel
+name: Deploy to Vercel Production
+run-name: ${{ github.actor }} is deploying to Production 🚀
 
 on:
-  push:
-    branches:
-      - main   # 👈 adjust if your production branch is named differently
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy_prod:
+    name: Deploy Production
     runs-on: ubuntu-latest
+    environment:
+      name: production
+
     steps:
-      # Checkout your repository
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      # Setup Node.js (adjust version to match your project)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 20
 
-      # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # Build project for PRODUCTION
-      - name: Build project
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Pull Vercel Environment
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-      # Deploy prebuilt output to PRODUCTION
-      - name: Deploy to Vercel (Production)
-        id: deploy
+      - name: Build and Deploy to Vercel
         run: |
-          url=$(npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> $GITHUB_OUTPUT
-          echo "✅ Production deployed: $url"
+          echo "Production deployed at: $url"
