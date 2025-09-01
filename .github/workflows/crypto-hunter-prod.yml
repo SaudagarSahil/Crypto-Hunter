@@ -7,9 +7,13 @@ defaults:
     run:
         shell: bash
 
+env:
+    VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
 jobs:
-    deploy:
-        name: Build script
+    prebuild_prod:
+        name: Prebuild Prod
         runs-on: ubuntu-latest
 
         permissions:
@@ -27,11 +31,43 @@ jobs:
             - name: Install deps
               run: npm install
 
-            - name: build-vite-app
-              run: npm run build
+            - name: pull verce environments
+              run: npx verce pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: build with vercel
+              run: npx vecel build --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: upload prebuild output
+              uses: actions/upload-artifact@v4
+              with:
+                name: vercel-output-prod
+                path: .vercel/output
+        
+    deploy_prod:
+        name: Deploy Production
+        needs: prebuild_prod
+        environment:
+            name: production
+            url: ${{ steps.prebuild_prod.outputs.url }}
+        runs-on: ubuntu-latest
+        outputs:
+            url: ${{ steps.deploy.outputs.url }}
+        steps:
+            - name: download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: vercel-output-prod
+                path: .vercel/output
+
+            - name: Deploy prebuild to vercel
+              id: deploy
+              run: |
+                  url=$(npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+                  echo "url=$url" >> $GITHUB_OUTPUT
+                  echo "Production URL: $url"
             
-            - name: show-result
-              run: echo "VITE-BUILD-DONE"
+            
+            
 
 
 
