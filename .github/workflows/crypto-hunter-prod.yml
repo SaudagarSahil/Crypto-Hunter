@@ -15,6 +15,8 @@ jobs:
     prebuild_prod:
         name: Prebuild Prod
         runs-on: ubuntu-latest
+        environment:
+            name: production
 
         permissions:
             contents: "read"
@@ -35,7 +37,7 @@ jobs:
               run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
             - name: build with vercel
-              run: npx vecel build --token=${{ secrets.VERCEL_TOKEN }}
+              run: npx vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
             - name: upload prebuild output
               uses: actions/upload-artifact@v4
