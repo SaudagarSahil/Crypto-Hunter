@@ -31,8 +31,8 @@ jobs:
             - name: Install deps
               run: npm install
 
-            - name: pull verce environments
-              run: npx verce pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+            - name: pull vercel environments
+              run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
             - name: build with vercel
               run: npx vecel build --token=${{ secrets.VERCEL_TOKEN }}
