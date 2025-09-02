@@ -1,5 +1,5 @@
-name: Build From Work Branch
-run-name: ${{ github.actor }} is deploying to Production from work branch 🚀
+name: Deploy on Vercel Production
+run-name: ${{ github.actor }} is deploying to Production 🚀
 
 on:
   workflow_dispatch:
@@ -28,8 +28,7 @@ jobs:
         run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build and Deploy to Vercel
-        run : echo "Success"
-        # run: |
-        #   url=$(npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} -e VITE_CRYPTOCOMPARE_APIKEY=${{ secrets.VITE_CRYPTOCOMPARE_APIKEY }})
-        #   echo "url=$url" >> $GITHUB_OUTPUT
-        #   echo "Production deployed at: $url"
+        run: |
+          url=$(npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} -e VITE_CRYPTOCOMPARE_APIKEY=${{ secrets.VITE_CRYPTOCOMPARE_APIKEY }})
+          echo "url=$url" >> $GITHUB_OUTPUT
+          echo "Production deployed at: $url"
