@@ -6,6 +6,7 @@ on:
 
 jobs:
   deploy_prod:
+    if: github.ref == 'ref/heads/work'
     name: Deploy Production
     runs-on: ubuntu-latest
     environment:
